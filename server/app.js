@@ -9,6 +9,8 @@
 const express = require("express");
 const createServer = require("http-errors");
 const path = require("path");
+const swaggerUI = require("swagger-ui-express");
+const swaggerDoc = require("../swagger.json");
 const employeeRoute = require("./routes/employee");
 
 // Create the Express app
@@ -21,6 +23,9 @@ app.use(express.static(path.join(__dirname, "../dist/nodebucket")));
 app.use("/", express.static(path.join(__dirname, "../dist/nodebucket")));
 
 app.use("/api/employees", employeeRoute);
+
+// configure swagger
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(swaggerDoc));
 
 // error handler for 404 errors
 app.use(function (req, res, next) {
