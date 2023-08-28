@@ -5,6 +5,247 @@
   description: tasks page
 -->
 
-<div class="container-fluid pt-2 full-height" style="height: 100vh">
+<div class="container-fluid pt-2 text-yellow" style="min-height: 600px">
   <h1 class="text-center">My Tasks!</h1>
+
+  <!-- error messages -->
+  <div class="row justify-content-center pt-4">
+    <div class="col-sm-10 col-md-8 col-lg-6">
+      <div *ngIf="errorMessage">
+        <div class="alert alert-danger" role="alert">
+          {{ errorMessage }}
+        </div>
+      </div>
+
+      <div *ngIf="successMessage">
+        <div class="alert alert-success" role="alert">
+          {{ successMessage }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- end error messages -->
+
+  <!-- create task form -->
+  <div class="row justify-content-center pt-4">
+    <div class="col-sm-10 col-md-8 col-lg-6">
+      <form [formGroup]="newTaskForm" (ngSubmit)="addTask()">
+        <!-- task text -->
+        <div class="input-group mb-3">
+          <input
+            type="text"
+            class="form-control"
+            formControlName="text"
+            placeholder="Add a new task"
+            aria-label="Add a new task"
+            aria-describedby="btnAdd"
+          />
+          <button
+            class="btn btn-outline-secondary text-yellow"
+            type="submit"
+            [disabled]="!newTaskForm.valid"
+            id="btnAdd"
+          >
+            Add
+          </button>
+        </div>
+        <!-- end task text -->
+
+        <!-- radio buttons -->
+        <div class="form-check form-check-inline">
+          <!-- testing -->
+          <input
+            type="radio"
+            class="form-check-input"
+            formControlName="category"
+            name="category"
+            id="testingRadio"
+            value="testing"
+          />
+          <label for="testingRadio" class="form-check-label">Testing</label>
+        </div>
+        <!-- meetings -->
+        <div class="form-check form-check-inline">
+          <input
+            type="radio"
+            class="form-check-input"
+            formControlName="category"
+            name="category"
+            id="meetingsRadio"
+            value="meetings"
+          />
+          <label for="meetingsRadio" class="form-check-label">Meetings</label>
+        </div>
+        <!-- projects -->
+        <div class="form-check form-check-inline">
+          <input
+            type="radio"
+            class="form-check-input"
+            formControlName="category"
+            name="category"
+            id="projectsRadio"
+            value="projects"
+          />
+          <label for="projectsRadio" class="form-check-label">Projects</label>
+        </div>
+        <!-- other -->
+        <div class="form-check form-check-inline">
+          <input
+            type="radio"
+            class="form-check-input"
+            formControlName="category"
+            name="category"
+            id="otherRadio"
+            value="other"
+          />
+          <label for="otherRadio" class="form-check-label">Other</label>
+        </div>
+
+        <!-- error handling -->
+        <div class="mt-2">
+          <!-- required -->
+          <div
+            *ngIf="
+              newTaskForm.controls['text'].touched &&
+              newTaskForm.controls['text'].hasError('required')
+            "
+          >
+            <div
+              class="alert alert-danger alert-dismisibble fade show"
+              role="alert"
+            >
+              Please enter a task
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+
+          <!-- min-length -->
+          <div
+            *ngIf="
+              newTaskForm.controls['text'].touched &&
+              newTaskForm.controls['text'].hasError('minlength')
+            "
+          >
+            <div
+              class="alert alert-danger alert-dismisibble fade show"
+              role="alert"
+            >
+              Task field must be at least 3 characters long!
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+
+          <!-- max-length -->
+          <div
+            *ngIf="
+              newTaskForm.controls['text'].touched &&
+              newTaskForm.controls['text'].hasError('maxlength')
+            "
+          >
+            <div
+              class="alert alert-danger alert-dismisibble fade show"
+              role="alert"
+            >
+              Task field must be no more than 50 characters long!
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="alert"
+                aria-label="Close"
+              ></button>
+            </div>
+          </div>
+        </div>
+        <!-- end error handling -->
+      </form>
+    </div>
+  </div>
+  <!-- end task form -->
+
+  <!-- task columns -->
+  <div class="row gy-3 mt-2 justify-content-center">
+    <!-- todo column -->
+    <div class="col-sm-5 col-md-4 col-lg-3 bg-dark-red pt-4 pb-4">
+      <h4 class="text-center">ToDo</h4>
+      <div class="p-3">
+        <div class="container">
+          <!-- if no todo tasks -->
+          <div *ngIf="!todo || todo.length === 0">
+            <div class="alert alert-info">No tasks to do yet!</div>
+          </div>
+
+          <div *ngFor="let item of todo" class="mt-2">
+            <div class="row border bg-white">
+              <div class="col-sm-6 p-3">
+                <div class="card-body">
+                  <button
+                    *ngIf="item.category.categoryName"
+                    [ngStyle]="{
+                      'background-color': item.category.backgroundColor
+                    }"
+                    data-bs-toggle="tooltip"
+                    title="{{ item.category.categoryName }}"
+                    style="width: 25%; border: 2px solid black"
+                    class="btn"
+                  ></button>
+
+                  <div>
+                    {{ item.text }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end of todo column -->
+
+    <!-- done column -->
+    <div class="col-sm-5 col-md-4 col-lg-3 bg-dark-red pt-4 pb-4">
+      <h4 class="text-center">Done</h4>
+      <div class="p-3">
+        <div class="container">
+          <!-- if no done tasks -->
+          <div *ngIf="!done || done.length === 0">
+            <div class="alert alert-info">No tasks done yet!</div>
+          </div>
+
+          <div *ngFor="let item of done" class="mt-2">
+            <div class="row border bg-white">
+              <div class="col-sm-6">
+                <div class="card-body">
+                  <button
+                    *ngIf="item.category.categoryName != 'other'"
+                    [ngStyle]="{
+                      'background-color': item.category.backgroundColor
+                    }"
+                    data-bs-toggle="tooltip"
+                    title="{{ item.category.categoryName }}"
+                    style="width: 25%"
+                    class="btn"
+                  ></button>
+
+                  <div>
+                    {{ item.text }}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- end of done column -->
+  </div>
 </div>

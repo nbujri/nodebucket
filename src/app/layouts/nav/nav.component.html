@@ -5,8 +5,8 @@
   description: navigation bar
 -->
 
-<nav class="ps-3 navbar navbar-expand-sm navbar-dark bg-dark fixed-top">
-  <a routerLink="/" class="navbar-brand">Nodebucket</a>
+<nav class="ps-3 navbar navbar-expand-sm fixed-top gfd-primary">
+  <a routerLink="/" class="navbar-brand text-yellow">Nodebucket</a>
 
   <!-- hamburger menu icon -->
   <button
@@ -25,19 +25,23 @@
   <div class="collapse navbar-collapse" id="navbarResponsive">
     <ul class="navbar-nav ms-auto p-2">
       <li class="nav-item">
-        <a routerLink="/home" class="nav-link">Home</a>
+        <a routerLink="/home" class="nav-link text-yellow">Home</a>
       </li>
       <li class="nav-item">
-        <a routerLink="#" class="nav-link">About Us</a>
+        <a routerLink="#" class="nav-link text-yellow">About Us</a>
       </li>
       <li class="nav-item">
-        <a routerLink="#" class="nav-link">Contact Us</a>
+        <a routerLink="contact" class="nav-link text-yellow">Contact Us</a>
       </li>
       <li class="nav-item">
-        <a href="/api-docs" class="nav-link" target="_blank">Docs</a>
+        <a href="/api-docs" class="nav-link text-yellow" target="_blank"
+          >Docs</a
+        >
       </li>
       <li *ngIf="!isSignedIn">
-        <a routerLink="/security/signin" class="nav-link">Sign In</a>
+        <a routerLink="/security/signin" class="nav-link text-yellow"
+          >Sign In</a
+        >
       </li>
 
       <!-- user account -->

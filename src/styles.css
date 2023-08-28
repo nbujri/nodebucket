@@ -1,4 +1,34 @@
 /* You can add global styles to this file, and also import other style files */
+
+/* gryffindor colors */
+:root {
+  --dark-red: #740001;
+  --red: #ae0001;
+  --yellow: #eeba30;
+  --dark-yellow: #d3a625;
+  --black: #000;
+}
+/* end colors */
+
+/* gryffindor theme */
+.gfd-primary {
+  background-color: var(--dark-red) !important;
+}
+
+.gfd-secondary {
+  background-color: var(--yellow) !important;
+}
+
+.text-yellow {
+  color: var(--yellow) !important;
+}
+/* end theme */
+
+body {
+  background-color: var(--black) !important;
+  /* color: var(--yellow) !important; */
+}
+
 .text-underline-hover {
   text-decoration: none;
 }
@@ -35,4 +65,16 @@
   .material-icons {
     color: rgba(255, 255, 255, 0.55) !important;
   }
+}
+
+.bg-dark-red {
+  background-color: var(--dark-red) !important;
+}
+
+.return {
+  text-decoration: none;
+}
+
+.return:hover {
+  text-decoration: underline;
 }

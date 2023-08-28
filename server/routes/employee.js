@@ -14,16 +14,27 @@ const { ObjectId } = require("mongodb");
 
 const ajv = new Ajv();
 
+// category schema
+const categorySchema = {
+  type: "object",
+  properties: {
+    categoryName: { type: "string" },
+    backgroundColor: { type: "string" },
+  },
+  required: ["categoryName", "backgroundColor"],
+  additionalProperties: false,
+};
+
 // task schema
-// TODO: figure out why this is not preventing additional properties
 const taskSchema = {
   type: "object",
   properties: {
     text: {
       type: "string",
     },
+    category: categorySchema,
   },
-  required: ["text"],
+  required: ["text", "category"],
   additionalProperties: false,
 };
 
@@ -104,7 +115,7 @@ router.get("/:empId/tasks", (req, res, next) => {
 });
 
 /**
- *
+ *  createTask
  */
 router.post("/:empId/tasks", (req, res, next) => {
   try {
@@ -134,12 +145,16 @@ router.post("/:empId/tasks", (req, res, next) => {
         return;
       }
 
-      const { text } = req.body;
-      console.log("req.body", req.body);
+      const { task } = req.body;
+      console.log("New Task: ", task);
+      console.log("body", req.body);
+
+      // const { text } = req.body;
+      // console.log("req.body", req.body);
 
       // validate req object
       const validator = ajv.compile(taskSchema);
-      const valid = validator({ text });
+      const valid = validator(task);
 
       console.log("valid", valid);
 
@@ -152,14 +167,16 @@ router.post("/:empId/tasks", (req, res, next) => {
         return;
       }
 
-      const task = {
+      // task object
+      const newTask = {
         _id: new ObjectId(),
-        text,
+        text: task.text,
+        category: task.category,
       };
 
       const result = await db
         .collection("employees")
-        .updateOne({ empId }, { $push: { todo: task } });
+        .updateOne({ empId }, { $push: { todo: newTask } });
 
       console.log("result", result);
 
@@ -171,7 +188,7 @@ router.post("/:empId/tasks", (req, res, next) => {
         return;
       }
 
-      res.status(201).send({ id: task._id });
+      res.status(201).send({ id: newTask._id });
     }, next);
   } catch (err) {
     console.log("err", err);
