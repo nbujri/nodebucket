@@ -95,6 +95,28 @@
                     },
                     "lastName": {
                       "type": "string"
+                    },
+                    "todo": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string"
+                          },
+                          "category": {
+                            "type": "object",
+                            "properties": {
+                              "categoryName": {
+                                "type": "string"
+                              },
+                              "backgroundColor": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
                     }
                   }
                 }
@@ -136,8 +158,24 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "text": {
-                    "type": "string"
+                  "task": {
+                    "type": "object",
+                    "properties": {
+                      "text": {
+                        "type": "string"
+                      },
+                      "category": {
+                        "type": "object",
+                        "properties": {
+                          "categoryName": {
+                            "type": "string"
+                          },
+                          "backgroundColor": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
                   }
                 },
                 "required": ["text"]
@@ -146,26 +184,8 @@
           }
         },
         "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object",
-                  "properties": {
-                    "empId": {
-                      "type": "number"
-                    },
-                    "firstName": {
-                      "type": "string"
-                    },
-                    "lastName": {
-                      "type": "string"
-                    }
-                  }
-                }
-              }
-            }
+          "201": {
+            "description": "Created"
           },
           "400": {
             "description": "Bad Request"

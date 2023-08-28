@@ -1,3 +1,10 @@
+/**
+ * title: tasks.component.ts
+ * author: ngi bujri
+ * date: august 23 2023
+ * description: task component
+ */
+
 import { Component } from '@angular/core';
 import { CookieService } from 'ngx-cookie-service';
 import { TaskService } from '../task.service';
@@ -23,9 +30,9 @@ export class TasksComponent {
     text: [
       null,
       Validators.compose([
-        Validators.required,
-        Validators.minLength(3),
-        Validators.maxLength(50),
+        Validators.required, // make text required
+        Validators.minLength(3), // text min-length 3
+        Validators.maxLength(50), // text max-length 50
       ]),
     ],
     category: [null],
@@ -66,6 +73,7 @@ export class TasksComponent {
     });
   }
 
+  // create a new user task
   addTask() {
     const text = this.newTaskForm.controls['text'].value;
     const category = this.newTaskForm.controls['category'].value;
@@ -97,6 +105,7 @@ export class TasksComponent {
     });
   }
 
+  // hide messages after 3 seconds
   hideAlert() {
     setTimeout(() => {
       this.errorMessage = '';
@@ -104,9 +113,11 @@ export class TasksComponent {
     }, 3000);
   }
 
+  // get a users tasks
   getTask(text: string, categoryName: string) {
     let task: Item = {} as Item;
 
+    // category colors
     const white = '#FFF';
     const green = '#4BCE97';
     const purple = '#9F8FEF';

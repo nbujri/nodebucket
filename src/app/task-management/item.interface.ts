@@ -1,3 +1,10 @@
+/**
+ * title: item.interface.ts
+ * author: ngi bujri
+ * date: august 23 2023
+ * description: item interface
+ */
+
 export interface Category {
   categoryName: string;
   backgroundColor: string;
