@@ -22,4 +22,15 @@ export class TaskService {
   addTask(empId: number, task: Item) {
     return this.http.post('/api/employees/' + empId + '/tasks', { task });
   }
+
+  updateTask(empId: number, todo: Item[], done: Item[]) {
+    return this.http.put('/api/employees/' + empId + '/tasks', {
+      todo,
+      done,
+    });
+  }
+
+  deleteTask(empId: number, taskId: string) {
+    return this.http.delete('/api/employees/' + empId + '/tasks/' + taskId);
+  }
 }

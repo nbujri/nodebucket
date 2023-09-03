@@ -8,6 +8,9 @@
   "tags": [
     {
       "name": "Employees"
+    },
+    {
+      "name": "Task Management"
     }
   ],
   "paths": {
@@ -64,7 +67,7 @@
     },
     "/api/employees/{empId}/tasks": {
       "get": {
-        "tags": ["Employees"],
+        "tags": ["Task Management"],
         "summary": "findAllTasks",
         "description": "Return all of an employees tasks",
         "operationId": "findAllTasks",
@@ -135,7 +138,7 @@
         }
       },
       "post": {
-        "tags": ["Employees"],
+        "tags": ["Task Management"],
         "summary": "createTask",
         "description": "Create an employee task",
         "operationId": "createTask",
@@ -186,6 +189,135 @@
         "responses": {
           "201": {
             "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      },
+      "put": {
+        "tags": ["Task Management"],
+        "summary": "updateTask",
+        "description": "Update an employee task status",
+        "operationId": "updateTask",
+        "parameters": [
+          {
+            "name": "empId",
+            "in": "path",
+            "required": true,
+            "description": "Employee ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Description of task",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "todo": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": { "type": "string" },
+                        "text": { "type": "string" },
+                        "category": {
+                          "type": "object",
+                          "properties": {
+                            "categoryName": {
+                              "type": "string"
+                            },
+                            "backgroundColor": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "done": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "_id": { "type": "string" },
+                        "text": { "type": "string" },
+                        "category": {
+                          "type": "object",
+                          "properties": {
+                            "categoryName": {
+                              "type": "string"
+                            },
+                            "backgroundColor": {
+                              "type": "string"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                },
+                "required": ["text"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "404": {
+            "description": "Not Found"
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/employees/{empId}/tasks/{taskId}": {
+      "delete": {
+        "tags": ["Task Management"],
+        "summary": "deleteTask",
+        "description": "Delete an employee task",
+        "operationId": "deleteTask",
+        "parameters": [
+          {
+            "name": "empId",
+            "in": "path",
+            "required": true,
+            "description": "Employee ID",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "taskId",
+            "in": "path",
+            "required": true,
+            "description": "task ID",
+            "schema": {
+              "type": "number"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
           },
           "400": {
             "description": "Bad Request"

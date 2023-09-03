@@ -11,6 +11,11 @@ import { TaskService } from '../task.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Employee } from '../employee.interface';
 import { Item } from '../item.interface';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-tasks',
@@ -99,6 +104,73 @@ export class TasksComponent {
         this.hideAlert();
       },
       error: (err) => {
+        this.errorMessage = err.message;
+        this.hideAlert();
+      },
+    });
+  }
+
+  deleteTask(taskId: string) {
+    console.log('task item: ' + taskId);
+
+    if (!confirm('Are you sure you want to delete this task?')) {
+      return;
+    }
+
+    this.taskService.deleteTask(this.empId, taskId).subscribe({
+      next: (res: any) => {
+        console.log('task deleted with id ' + taskId);
+
+        if (!this.todo) this.todo = [];
+        if (!this.done) this.done = [];
+
+        this.todo = this.todo.filter((t) => t._id?.toString() !== taskId);
+        this.done = this.done.filter((t) => t._id?.toString() !== taskId);
+
+        this.successMessage = 'task deleted successfully';
+        this.hideAlert();
+      },
+      error: (err) => {
+        console.log('err', err);
+        this.errorMessage = err.message;
+        this.hideAlert();
+      },
+    });
+  }
+
+  drop(event: CdkDragDrop<any[]>) {
+    if (event.previousContainer === event.container) {
+      moveItemInArray(
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+
+      console.log('moved item in array', event.container.data);
+
+      this.updateTaskList(this.empId, this.todo, this.done);
+    } else {
+      transferArrayItem(
+        event.previousContainer.data,
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex
+      );
+
+      console.log('moved item in array', event.container.data);
+
+      this.updateTaskList(this.empId, this.todo, this.done);
+    }
+  }
+
+  updateTaskList(empId: number, todo: Item[], done: Item[]) {
+    this.taskService.updateTask(empId, todo, done).subscribe({
+      next: (res: any) => {
+        console.log('task updated successfully');
+      },
+
+      error: (err) => {
+        console.log('err', err);
         this.errorMessage = err.message;
         this.hideAlert();
       },
