@@ -8,9 +8,6 @@
   "tags": [
     {
       "name": "Employees"
-    },
-    {
-      "name": "Task Management"
     }
   ],
   "paths": {
@@ -67,7 +64,7 @@
     },
     "/api/employees/{empId}/tasks": {
       "get": {
-        "tags": ["Task Management"],
+        "tags": ["Employees"],
         "summary": "findAllTasks",
         "description": "Return all of an employees tasks",
         "operationId": "findAllTasks",
@@ -138,7 +135,7 @@
         }
       },
       "post": {
-        "tags": ["Task Management"],
+        "tags": ["Employees"],
         "summary": "createTask",
         "description": "Create an employee task",
         "operationId": "createTask",
@@ -202,7 +199,7 @@
         }
       },
       "put": {
-        "tags": ["Task Management"],
+        "tags": ["Employees"],
         "summary": "updateTask",
         "description": "Update an employee task status",
         "operationId": "updateTask",
@@ -291,7 +288,7 @@
     },
     "/api/employees/{empId}/tasks/{taskId}": {
       "delete": {
-        "tags": ["Task Management"],
+        "tags": ["Employees"],
         "summary": "deleteTask",
         "description": "Delete an employee task",
         "operationId": "deleteTask",
